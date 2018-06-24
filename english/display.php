@@ -181,6 +181,18 @@
                                 <td><?php echo $cat?><span style="float:right;">
                                 <i class="gsize <?php echo $gicon?>"></i></span></td>
                             </tr>
+                            <tr>
+                            <td>Factuality:
+                            </td>
+                            <td><?php echo $row["Truthiness"]?>, <?php echo $row["is_factual"]?>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Bias:
+                            </td>
+                            <td><?php echo $row["bias"]?>
+                            </td>
+                            </tr>
                         </table>
                     </div>
                     <h3 class="sm_heading">Social Media Profiles</h3>
@@ -207,7 +219,7 @@
                     </tr>
                     <tr>
                     <td>Amazon Alexa:</td>
-                    <td>12345 rank</td>
+                    <td><?php echo $row["alexa_rank"]?> rank</td>
                     <td>
                     <?php $alexa="https://www.alexa.com/siteinfo/".$row["Alexa page (https://www.alexa.com/siteinfo/)"] ?>
                             <a href=<?php echo $alexa ?> target="_blank" class="icoWikipedia" title="Alexa">
@@ -228,8 +240,15 @@
                     <td>12345 connections</td>
                     <td>
                     <?php $google="https://plus.google.com/+".$row["GooglePlus (https://plus.google.com/+)"] ?>
-                            <a href=<?php echo $google ?> target="_blank" class="icoWikipedia" title="Google+">
+                            
+                            <?php if(strcmp($row["GooglePlus (https://plus.google.com/+)"],'')==0) { ?>
+                            <a href=#  class="icoWikipedia" title="Google+ link not found">
+                            <img style="width:35px; height:35px" src="google-plus-bnw.svg"></a>
+                            <?php } else {?>
+                            <a href=<?php echo $google ?> target="_blank" class="icoWikipedia" title="Google+">    
                             <img style="width:35px; height:35px" src="googleplus.png"></a>
+                            <?php } ?>
+
                     </td>
                     </tr>
                     <tr>
