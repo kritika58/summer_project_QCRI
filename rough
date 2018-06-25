@@ -1,1 +1,28 @@
-background-color:#337ab7
+                        <form action=# action="<?=$_SERVER['PHP_SELF'];?>" method="post">
+                    <input type="text" name="Search" placeholder="Search.."><br>
+                    <input type="submit" value="search">
+                    <br>
+                    <hr>
+                    <?php
+                              $sql = "SELECT * FROM news_arabic";
+                              $result = $conn->query($sql);
+                              print_r($_POST); 
+                                if(isset($_POST['search'])){
+                                    $search=$_POST['search'];
+                                    $search = mysql_real_escape_string($search);
+                                    $sql_search="SELECT * FROM news_arabic WHERE user_name LIKE '%{$search}%' ";
+                                    echo "Search Query:".$sql_search;
+                                    $result_search = $conn->query($sql_search);
+                                    $r1=$result_search->num_rows;
+                                    echo $r1;                                     
+
+                                      if ($result_search->num_rows > 0) {
+                                          while($row_search = $result_search->fetch_assoc()) { 
+                                            echo $row_search["user_name"];
+                                              }       
+                                            }
+                                }
+                          ?>
+                    <hr>
+
+                    </form>

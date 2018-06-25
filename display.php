@@ -92,7 +92,7 @@
     $id= $_GET["id"];
     ?>
     <?php 
-        $sql = "SELECT * FROM news_arabic WHERE Serial='$id'"; 
+        $sql = "SELECT * FROM news_arabic WHERE user_id='$id'"; 
         $rs = $conn->query($sql);
         $row = mysqli_fetch_array($rs);
     ?>
@@ -211,8 +211,13 @@
                     <td>12345 subscribers</td>
                     <td>
                     <?php $youtube="http://www.youtube.com/".$row["YouTube (http://www.youtube.com/)"] ?>
+                        <?php if(strcmp($row["YouTube (http://www.youtube.com/)"],'')==0) { ?>
+                            <a href=# class="icoWikipedia" title="YouTube link not found">
+                            <i style="color: grey" class="gsize fa fa-youtube-play"></i></a>
+                        <?php } else {?>
                             <a href=<?php echo $youtube ?> target="_blank" class="icoWikipedia" title="YouTube">
                             <i style="color: red" class="gsize fa fa-youtube-play"></i></a>
+                        <?php }?>
                     </td>
                     </tr>
                     <tr>
@@ -220,8 +225,15 @@
                     <td>12345 connections</td>
                     <td>
                     <?php $google="https://plus.google.com/".$row["GooglePlus (https://plus.google.com/)"] ?>
-                            <a href=<?php echo $google ?> target="_blank" class="icoWikipedia" title="Google+">
+                            
+                            <?php if(strcmp($row["GooglePlus (https://plus.google.com/)"],'')==0) { ?>
+                            <a href=#  class="icoWikipedia" title="Google+ link not found">
+                            <img style="width:35px; height:35px" src="google-plus-bnw.jpg"></a>
+                            <?php } else {?>
+                            <a href=<?php echo $google ?> target="_blank" class="icoWikipedia" title="Google+">    
                             <img style="width:35px; height:35px" src="googleplus.png"></a>
+                            <?php } ?>
+
                     </td>
                     </tr>
                     <tr>
@@ -229,8 +241,13 @@
                     <td>12345 followers</td>
                     <td>
                     <?php $instagram="https://www.instagram.com/".$row["Instagram (https://www.instagram.com/)"] ?>
+                    <?php if(strcmp($row["YouTube (http://www.youtube.com/)"],'')==0) { ?>
+                        <a href=# class="icoWikipedia" title="Instagram link not found">
+                            <img style="width:35px; height:35px" src="instagram-bw.png"></a>
+                    <?php } else { ?>
                             <a href=<?php echo $instagram ?> target="_blank" class="icoWikipedia" title="Instagram">
                             <img style="width:35px; height:35px" src="instagram.png"></a>
+                    <?php } ?>
                     </td>
                     </tr>
                     </table> 
