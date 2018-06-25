@@ -32,39 +32,39 @@
    ?>
 
 <?php
-    $total_count=$conn->query("SELECT * FROM news_arabic");
+    $total_count=$conn->query("SELECT * FROM news_english");
     $total_count_row=mysqlI_fetch_array($total_count,MYSQL_NUM);
     $total_count_val=$total_count_row[0];
 
-    $facebook_count=$conn->query("SELECT COUNT('Facebook Page (https://www.facebook.com/)') FROM news_arabic");
+    $facebook_count=$conn->query("SELECT COUNT('Facebook Page (https://www.facebook.com/)') FROM news_english");
     $facebook_count_row=mysqli_fetch_assoc($facebook_count);
     $facebook_count_val=$facebook_count_row["COUNT('Facebook Page (https://www.facebook.com/)')"];
 
-    $twitter_count=$conn->query("SELECT COUNT(user_name) FROM news_arabic");
+    $twitter_count=$conn->query("SELECT COUNT(user_name) FROM news_english");
     $twitter_count_row=$twitter_count->fetch_array();
     $twitter_count_val=$twitter_count_row["COUNT(user_name)"];
 
-    $rss_count=$conn->query("SELECT COUNT('RSS Feed link') FROM news_arabic");
+    $rss_count=$conn->query("SELECT COUNT('RSS Feed link') FROM news_english");
     $rss_count_row=$rss_count->fetch_array();
     $rss_count_val=$rss_count_row["COUNT('RSS Feed link')"];
 
-    $wiki_count=$conn->query("SELECT COUNT('Wikipedia page (https://ar.wikipedia.org/wiki/)') FROM news_arabic");
+    $wiki_count=$conn->query("SELECT COUNT('Wikipedia page (https://ar.wikipedia.org/wiki/)') FROM news_english");
     $wiki_count_row=$wiki_count->fetch_array();
     $wiki_count_val=$wiki_count_row["COUNT('Wikipedia page (https://ar.wikipedia.org/wiki/)')"];
 
-    $alexa_count=$conn->query("SELECT COUNT('Alexa page (https://www.alexa.com/siteinfo/)') FROM news_arabic");
+    $alexa_count=$conn->query("SELECT COUNT('Alexa page (https://www.alexa.com/siteinfo/)') FROM news_english");
     $alexa_count_row=$alexa_count->fetch_array();
     $alexa_count_val=$alexa_count_row["COUNT('Alexa page (https://www.alexa.com/siteinfo/)')"];
 
-    $yt_count=$conn->query("SELECT COUNT('YouTube (http://www.youtube.com/)') FROM news_arabic");
+    $yt_count=$conn->query("SELECT COUNT('YouTube (http://www.youtube.com/)') FROM news_english");
     $yt_count_row=$yt_count->fetch_array();
     $yt_count_val=$yt_count_row["COUNT('YouTube (http://www.youtube.com/)')"];
 
-    $gp_count=$conn->query("SELECT COUNT('GooglePlus (https://plus.google.com/)') FROM news_arabic");
+    $gp_count=$conn->query("SELECT COUNT('GooglePlus (https://plus.google.com/)') FROM news_english");
     $gp_count_row=$gp_count->fetch_array();
     $gp_count_val=$gp_count_row["COUNT('GooglePlus (https://plus.google.com/)')"];
 
-    $insta_count=$conn->query("SELECT COUNT('Instagram (https://www.instagram.com/)') FROM news_arabic");
+    $insta_count=$conn->query("SELECT COUNT('Instagram (https://www.instagram.com/)') FROM news_english");
     $insta_count_row=$insta_count->fetch_array();
     $insta_count_val=$insta_count_row["COUNT('Instagram (https://www.instagram.com/)')"];
                     
@@ -120,7 +120,7 @@
 </table>    
 
 <?php
-$sql_country_count="SELECT COUNT(country), country from news_arabic GROUP BY country ORDER BY COUNT(country) DESC";
+$sql_country_count="SELECT COUNT(country), country from news_english GROUP BY country ORDER BY COUNT(country) DESC";
 $result_country_count = $conn->query($sql_country_count);
 $i=0;
 ?> 
@@ -153,7 +153,7 @@ $i=0;
 
     <!-- count of sources per category-->
     <?php
-    $sql_category_count="SELECT COUNT(category), Category from news_arabic GROUP BY Category ORDER BY COUNT(category) DESC";
+    $sql_category_count="SELECT COUNT(category), Category from news_english GROUP BY Category ORDER BY COUNT(category) DESC";
     $result_category_count = $conn->query($sql_category_count);
     $i=0;
     ?>

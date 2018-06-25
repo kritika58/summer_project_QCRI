@@ -117,25 +117,6 @@
          </form>
       </nav>
 
-      <?php
-         $count=0;
-         if(isset($_POST['search'])){
-           $user_name1=$_POST['search'];
-           while($row = $result->fetch_array(MYSQLI_ASSOC)){
-                 foreach ($row[user_name] as $user_name1) {
-                 $count++ ;
-                     if($search== $user_name1){
-                     echo "The news source you are looking for is in row number" . $count;
-                     echo "if statement";
-         
-                     }
-                     echo "in loop";
-                 }
-                echo "while";
-           }
-         
-         }
-         ?> 
       <div class="col-sm-3 sidenav" >
          <div style="max-height:78vh;" class= "pre-scrollable">
          <p class="desc">News<span style="float:left"><img style="width:35px;height:35px;" src="favicon.gif"></span></p>
@@ -193,13 +174,17 @@
                      </select>
                      <br>
                      <select class="form-control" name="category" required>
-                        <h2>Please select a category</h2>
-                        <option value="General">General</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="Sports">Sports</option>
-                        <option value="Science">Science</option>
-                        <option value="Health">Health</option>
-                        <option value="Economy">Economy</option>
+                     <?php 
+                     $sql_category="SELECT DISTINCT Category from news_arabic";
+                     $result_category = $conn->query($sql_category);
+                     $i=0;
+                     while ($row_category = $result_category->fetch_array(MYSQLI_ASSOC))
+                        {
+                            $category[]=$row_category["Category"];
+                            echo "<option value=$category[$i]>$category[$i]</option>";  
+                     $i++;
+                     }                     
+                     ?> 
                      </select>
                      <br>
                      <center>

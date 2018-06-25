@@ -103,7 +103,7 @@
     $id= $_GET["id"];
     ?>
     <?php 
-        $sql = "SELECT * FROM news_english WHERE Serial='$id'"; 
+        $sql = "SELECT * FROM news_english WHERE user_id='$id'"; 
         $rs = $conn->query($sql);
         $row = mysqli_fetch_array($rs);
     ?>

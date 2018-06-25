@@ -26,3 +26,9 @@
                     <hr>
 
                     </form>
+
+
+
+
+                    $sql="SELECT * FROM tweets_ara, ara_source_name WHERE 
+	ara_source_name.source_user_name = tweets_ara.screen_name";
