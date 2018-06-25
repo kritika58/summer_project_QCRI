@@ -29,7 +29,7 @@
 }
 .tweet_pic {
 	margin: 10px 10px;
-	width:200px;
+	width:250px;
 	height:150px;
 	top:0%;
 	float:right;
