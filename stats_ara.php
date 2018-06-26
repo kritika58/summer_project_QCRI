@@ -183,6 +183,7 @@ $i=0;
         {
             $country_name[]=$row_country_count["country"];
             $country_count[]=$row_country_count["COUNT(country)"];
+            $country_percent[]=round(($row_country_count["COUNT(country)"]/$total_count_row)*100,0);
             $flag= strtolower($row_country_count["country_code"]);
             $flag.=".svg";
             $f_path="flags\\".$flag;
@@ -193,7 +194,7 @@ $i=0;
                     <img style="width:25px;height:25px;" src="<?php echo $f_path ?>">
                     </span>                    
                     </td>
-                    <td><?php echo $country_count[$i]?></td>
+                    <td><?php echo $country_count[$i]?> (<?php echo $country_percent[$i]?>%)</td>
                     
               </tr>
         <?php
@@ -223,7 +224,7 @@ $i=0;
         {
             $category_name[]=$row_category_count["Category"];
             $category_count[]=$row_category_count["COUNT(category)"];
-
+            $category_percent[]=round(($row_category_count["COUNT(category)"]/$total_count_row)*100,0);
             $cat= $category_name[$i];
             if (strcmp($cat,'General')==0)
             {
@@ -262,7 +263,7 @@ $i=0;
                     <span style="float:left;">
                     <i class="gsize <?php echo $gicon?>"></i></span>
                     </td>
-                    <td><?php echo $category_count[$i]?></td>
+                    <td><?php echo $category_count[$i]?> (<?php echo $category_percent[$i]?>%)</td>
                     
                     </tr> 
         <?php 
