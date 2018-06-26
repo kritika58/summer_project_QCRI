@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>QCRI-Mega News (English) Project</title>
+      <title>News Project</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
@@ -76,11 +76,12 @@
          bottom: 0;
          overflow: auto;
          }
-         .highlight {
-           background:yellow;
-           color:red;
-
-         }
+         .highlight
+          {
+          background: #CEDAEB;
+          font-weight:bold;
+          color:red;
+          }
       </style>
       <script>
          $(document).ready(function () {
@@ -110,10 +111,10 @@
       <nav class="navbar navbar-dark bg-dark justify-content-between">
          <a class="heading navbar-brand">Live News Project</a>
          <form class="form-inline">
-         <!--
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="search">Search</button>-->
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="search">Search</button>
             <a class="btn btn-default my-2 my-sm-0" href="english/index.php">EN</a>
+            <a class="btn btn-default my-2 my-sm-0" target="_blank" href="stats_ara.php">Statistics</a>
          </form>
       </nav>
 
@@ -127,40 +128,44 @@
             </ul>
             <div class="tab-content">
                <div id="home" class="tab-pane fade in active">
-               <form action=# action="<?=$_SERVER['PHP_SELF'];?>" method="post">
-          <input type="text" name="Search" placeholder="Search.."><br>
-          <input type="submit" value="search">
-          <br>
-          <hr>
-          <?php
-                    $sql = "SELECT * FROM news_arabic";
-                    $result = $conn->query($sql);
-                    print_r($_POST); 
-                    //echo "Search Query 222323 field:".$_POST['Search'];
-                      if(isset($_POST['search'])){
-                          $search=$_POST['search'];
-                          $search = mysql_real_escape_string($search);
-                          $sql_search="SELECT * FROM news_arabic WHERE user_name LIKE '%{$search}%' ";
-                          echo "Search Query:".$sql_search;
-                          $result_search = $conn->query($sql_search);
-                          $r1=$result_search->num_rows;
-                          echo $r1;
-                            
 
-                            if ($result_search->num_rows > 0) {
-                                while($row_search = $result_search->fetch_assoc()) { 
-                                  echo $row_search["user_name"];
-                                    }       
-                                  }
-                      }
-                ?>
-          <hr>
+                    <form action="<?=$_SERVER['PHP_SELF'];?>" method="post">
+                    <input style="width:60%;display:inline;" type="text" name="Search_str" placeholder="Search.."><br>
+                    <input style="width:30%;display:inline;" type="submit" value="Search" name="search">
+                    <br>
+                    <?php
+                              $sql = "SELECT * FROM news_arabic";
+                              $result = $conn->query($sql);
+                                if(isset($_POST["search"])){
+                                    $search=$_POST["Search_str"];
+                                    $sql_search="SELECT * FROM news_arabic WHERE user_name LIKE '%".$search."%' ";
+                                    $result_search = $conn->query($sql_search);
+                                    $r1=$result_search->num_rows;                                   
 
-          </form>
+                                      if ($result_search->num_rows > 0) {
+                                          while($row_search = $result_search->fetch_assoc()) { 
+                                            echo $row_search["user_name"];
+                                            $uid=$row_search["user_id"];
+                                            $uid= '#'.$uid;
+                                            ?>
+                                            <script>
+                                            $($uid).addClass("highlight");
+                                            </script>
+                                            <?php
+                                              }       
+                                            }
+                                            else {
+                                              echo "Not found";
+                                            }
+                                          
+                                }
+                          ?>
+                    </form>
+
+
                   <form id="form1" action="<?=$_SERVER['PHP_SELF'];?>" method="post">
                      <ul  class="desc hnav">
-                        <br>        
-
+                        <br>
                         <center>
                            <input type="submit" class="btn btn-primary" name="select" value="Add to my list">
                         </center>
@@ -171,8 +176,7 @@
                                while($row = $result->fetch_assoc()) { 
                            ?>
                         <li>
-                           <span><input type="checkbox" name="check_list[]" id="<?php echo $row["user_name"]?>"
-                           value="<?php echo $row["user_id"]?>">
+                           <span><input type="checkbox" name="check_list[]" id=<?php echo $row["user_id"]?> value="<?php echo $row["user_id"]?>">
                            <a href="display.php?id=<?php echo $row["user_id"]?>">
                            <?php echo $row["user_name"]?>
                            <img align="right" style="width: 40px; height:40px;" src="<?php echo $row["user_profile_image_url"]?>">
@@ -184,7 +188,7 @@
                            ?>
                      </ul>
                   </form>
-                  
+
                </div>
                <div id="menu1" class="tab-pane fade msize">
                   <br>
@@ -205,13 +209,17 @@
                      </select>
                      <br>
                      <select class="form-control" name="category" required>
-                        <h2>Please select a category</h2>
-                        <option value="General">General</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="Sports">Sports</option>
-                        <option value="Science">Science</option>
-                        <option value="Health">Health</option>
-                        <option value="Economy">Economy</option>
+                     <?php 
+                     $sql_category="SELECT DISTINCT Category from news_arabic";
+                     $result_category = $conn->query($sql_category);
+                     $i=0;
+                     while ($row_category = $result_category->fetch_array(MYSQLI_ASSOC))
+                        {
+                            $category[]=$row_category["Category"];
+                            echo "<option value=$category[$i]>$category[$i]</option>";  
+                     $i++;
+                     }                     
+                     ?> 
                      </select>
                      <br>
                      <center>
@@ -311,7 +319,7 @@
                         $result1 = $conn->query($sql1);
                         //echo '<p class=\'desc\'>You have selected '.mysqli_num_rows($result1).' sources from '.$country_name.' in '.$selected_category.' category.</p>';
                         if ($result1->num_rows > 0) {
-                        echo "<ul  class='desc hnav'>";   
+                        echo "<ul  class='desc hnav'>";		
                         $i=0;
                         while ($row1 = $result1->fetch_array(MYSQLI_ASSOC))
                         {
@@ -319,8 +327,7 @@
                             $id[]=$row1["user_id"];
                             $img[]=$row1["user_profile_image_url"];
                             echo "<li>";
-            
-                            echo "<span><input type=\"checkbox\" name=\"check_list1[]\" value=\"<?php $id[$i] ?>\">
+                            echo "<span><input type=\"checkbox\" name=\"check_list1[]\" value=$id[$i]>
                             <a href=\"display.php?id=$id[$i]?>\">$uname[$i]
                             <img align=\"right\" style=\"width: 40px; height:40px;\" src=$img[$i]>
                             </span>
@@ -344,8 +351,9 @@
                      if(isset($_POST['select'])){
                        if(!empty($_POST['check_list'])){
                          foreach($_POST['check_list'] as $selected){
+                          $selected = mysqli_real_escape_string($conn,$selected);
                          $sql = "INSERT INTO my_sources_ar (us_id)
-                         VALUES ('.$selected.')";
+                         VALUES ('".$selected."')";
                      
                          $result = mysqli_query($conn,$sql);
                          }                
@@ -372,19 +380,38 @@
                           </li>";  
                   }
                   }
+                  $q1="SELECT * FROM my_sources_ar";
+                  $r1= mysqli_query($conn,$q1);
+                  if ($r1->num_rows >0) {
+                    while ($row1= $r1->fetch_assoc()) {
+                      $s_id=$row1["us_id"];
+                      $q2="SELECT user_screen_name FROM news_arabic WHERE user_id='".$s_id."' ";
+                      $r2= mysqli_query($conn,$q2);
+                      if ($r2->num_rows >0) {
+                        while ($row2=$r2->fetch_assoc()) {
+                          $s_user_name= $row2["user_screen_name"];
+                          $sql = "INSERT INTO ara_source_name (source_user_name,source_user_id) VALUES ('".$s_user_name."', '".$s_id."')";
+                                    $result = mysqli_query($conn,$sql);
+                
+                        }
+                      }
+                
+                    }
+                  }
                   }
                   ?>
                   <?php 
                      if(isset($_POST['add'])){
                        if(!empty($_POST['check_list1'])){
                            foreach($_POST['check_list1'] as $selected){
+                            $selected = mysqli_real_escape_string($conn,$selected);
                              $sql = "INSERT INTO my_sources_ar (us_id)
                              VALUES ('".$selected."')";
                          
                              $result = mysqli_query($conn,$sql);
                          
                          }
-                           $sql_f = "SELECT * FROM my_sources_ar,news_arabic WHERE my_sources_ar.us_id=news_arabic.user_name";
+                           $sql_f = "SELECT * FROM my_sources_ar,news_arabic WHERE my_sources_ar.us_id=news_arabic.user_id";
                              $result_f = mysqli_query($conn,$sql_f);
                      
                              if ($result_f->num_rows > 0) {
@@ -405,6 +432,25 @@
                             </li>";  
                   }
                   }
+                  }
+                  $truncate= mysqli_query($conn,"TRUNCATE TABLE ara_source_name");
+                  $q1="SELECT * FROM my_sources_ar";
+                  $r1= mysqli_query($conn,$q1);
+                  if ($r1->num_rows >0) {
+                    while ($row1= $r1->fetch_assoc()) {
+                      $s_id=$row1["us_id"];
+                      $q2="SELECT user_screen_name FROM news_arabic WHERE user_id='".$s_id."' ";
+                      $r2= mysqli_query($conn,$q2);
+                      if ($r2->num_rows >0) {
+                        while ($row2=$r2->fetch_assoc()) {
+                          $s_user_name= $row2["user_screen_name"];
+                          $sql = "INSERT INTO ara_source_name (source_user_name,source_user_id) VALUES ('".$s_user_name."', '".$s_id."')";
+                                    $result = mysqli_query($conn,$sql);
+                
+                        }
+                      }
+                
+                    }
                   }
                   }
                   ?>                  
@@ -418,13 +464,14 @@
                       $r= mysqli_query($conn,"TRUNCATE TABLE my_sources_ar");
                        if(!empty($_POST['check_list_f'])){                         
                            foreach($_POST['check_list_f'] as $selected){
+                            $selected = mysqli_real_escape_string($conn,$selected);
                              $sql = "INSERT INTO my_sources_ar (us_id)
                              VALUES ('".$selected."')";
                          
                              $result = mysqli_query($conn,$sql);
                          
                          }
-                           $sql_f = "SELECT * FROM my_sources_ar,news_arabic WHERE my_sources_ar.us_id=news_arabic.user_name";
+                           $sql_f = "SELECT * FROM my_sources_ar,news_arabic WHERE my_sources_ar.us_id=news_arabic.user_id";
                              $result_f = mysqli_query($conn,$sql_f);
                      
                              if ($result_f->num_rows > 0) {
@@ -446,6 +493,25 @@
                   }
                   }
                   }
+                  $truncate= mysqli_query($conn,"TRUNCATE TABLE ara_source_name");
+                  $q1="SELECT * FROM my_sources_ar";
+                  $r1= mysqli_query($conn,$q1);
+                  if ($r1->num_rows >0) {
+                    while ($row1= $r1->fetch_assoc()) {
+                      $s_id=$row1["us_id"];
+                      $q2="SELECT user_screen_name FROM news_arabic WHERE user_id='".$s_id."' ";
+                      $r2= mysqli_query($conn,$q2);
+                      if ($r2->num_rows >0) {
+                        while ($row2=$r2->fetch_assoc()) {
+                          $s_user_name= $row2["user_screen_name"];
+                          $sql = "INSERT INTO ara_source_name (source_user_name,source_user_id) VALUES ('".$s_user_name."', '".$s_id."')";
+                                    $result = mysqli_query($conn,$sql);
+                
+                        }
+                      }
+                
+                    }
+                  }
                   }
                   ?>
                </div>
@@ -455,27 +521,6 @@
       </div>
       <!-- PAGE CONTENT and PHP CODE WILL BE HERE -->  
       <div class="col-sm-9">
-      <?php
-                    $sql = "SELECT * FROM news_arabic";
-                    $result = $conn->query($sql);
-          
-                      if(isset($_POST['search'])){
-                          $search=$_POST['search'];
-                          $search = mysql_real_escape_string($search);
-                          $sql_search="SELECT * FROM news_arabic WHERE user_name LIKE '%{$search}%' ";
-                          echo "Search Query:".$sql_search;
-                          $result_search = $conn->query($sql_search);
-                          $r1=$result_search->num_rows;
-                          echo $r1;
-                            
-
-                            if ($result_search->num_rows > 0) {
-                                while($row_search = $result_search->fetch_assoc()) { 
-                                  echo $row_search["user_name"];
-                                    }       
-                                  }
-                      }
-                ?>
          <div class="panel panel-default">
             <div class="panel-heading">
                <h3 class="panel-title">News Feed</h3>
@@ -488,12 +533,28 @@
             <div class="panel-body">
                <!-- <a style="width:100%;background-color: gray;" href="manage.php" 
                   class="btn btn-primary btn-block" role="button">Manage Your Sources</a> -->
-                  <?php include 'tweets.php'; ?>
+
+
+                <?php
+                if(isset($_POST['delete'])){
+                include 'tweets_custom.php';
+                }
+                else if(isset($_POST['select'])){
+                  include 'tweets_custom.php';
+                  }
+                else if(isset($_POST['add'])){
+                    include 'tweets_custom.php';
+                    }
+                    else {
+                      include 'tweets.php';
+                    }
+
+                ?>
             </div>
          </div>
       </div>
       <!-- call tweets.php -->
-      </div> <!-- end <div class="container"> -->  
+      </div> <!-- end <div class="container"> -->	 
       </div>
    </body>
 </html>

@@ -108,12 +108,24 @@
    </head>
    <body>
       <nav class="navbar navbar-dark bg-dark justify-content-between">
-         <a class="heading navbar-brand">Live News Project</a>
+         <a style="float:left" class="heading navbar-brand">Live News Project</a>
          <form class="form-inline">
+         
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="search">Search</button>
-            <a class="btn btn-default my-2 my-sm-0" href="english/index.php">EN</a>
-            <a class="btn btn-default my-2 my-sm-0" target="_blank" href="stats_ara.php">Statistics</a>
+            <button class="btn btn-default my-2 my-sm-0" type="submit" value="search">Search &nbsp;
+            <span style="float:right;">
+            <i style="font-size: 20px;" class="fa fa-search"></i>
+            </span></button>
+            
+            <a class="btn btn-default my-2 my-sm-0" href="english/index.php">EN &nbsp;
+            <span style="float:right;">
+            <img align="left" style="width: 22px; height:22px;" src="english-icon.png">
+            </span></a>
+            
+            <a class="btn btn-default my-2 my-sm-0" target="_blank" href="stats_ara.php">Statistics &nbsp;
+            <span style="float:right;">
+            <i style="font-size: 19px;" class="glyphicon glyphicon-stats"></i>
+            </span></a>
          </form>
       </nav>
 

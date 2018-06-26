@@ -105,10 +105,23 @@
       <nav class="navbar navbar-dark bg-dark justify-content-between">
          <a class="heading navbar-brand">Live News Project</a>
          <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="search">Search</button>
-            <a class="btn btn-default my-2 my-sm-0" href="http://localhost/Summer%20Project/">AR</a>
-            <a class="btn btn-default my-2 my-sm-0" target="_blank" href="stats_eng.php">Statistics</a>
+
+         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-default my-2 my-sm-0" type="submit" value="search">Search &nbsp;
+            <span style="float:right;">
+            <i style="font-size: 20px;" class="fa fa-search"></i>
+            </span></button>
+            
+            <a class="btn btn-default my-2 my-sm-0" href="http://localhost/Summer%20Project/">AR &nbsp;
+            <span style="float:right;">
+            <img align="left" style="width: 22px; height:22px;" src="arabic-icon.jpg">
+            </span></a>
+            
+            <a class="btn btn-default my-2 my-sm-0" target="_blank" href="stats_eng.php">Statistics &nbsp;
+            <span style="float:right;">
+            <i style="font-size: 19px;" class="glyphicon glyphicon-stats"></i>
+            </span></a>
+
          </form>
       </nav>
       <div class="col-sm-3 sidenav" >

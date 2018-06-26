@@ -1,3 +1,6 @@
+<?php
+   include 'dbconnection.php';
+   ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,11 +43,8 @@
 </head>
 <center>
 <div class="container">  
-<h2 class="heading">Arabic Site Anatomy</h2>
+<h2 class="heading">Arabic Site Statistics</h2>
 <hr>
-<?php
-   include 'dbconnection.php';
-   ?>
 <?php
 
     $total_count=$conn->query("SELECT * FROM news_arabic");
@@ -53,52 +53,46 @@
 
     $twitter_count=$conn->query("SELECT distinct user_name FROM news_arabic");
     $twitter_count_row=mysqli_num_rows($twitter_count);
-    $twitter_count_row=round(($twitter_count_row/$total_count_row)*100,0);
+    $twitter_count_val=round(($twitter_count_row/$total_count_row)*100,0);
 
     $facebook_count=$conn->query("SELECT distinct `Facebook Page (https://www.facebook.com/)` FROM news_arabic");
     $facebook_count_row=mysqli_num_rows($facebook_count)-1;
-    $facebook_count_row=round(($facebook_count_row/$total_count_row)*100,0);
+    $facebook_count_val=round(($facebook_count_row/$total_count_row)*100,0);
     
 
     $rss_count=$conn->query("SELECT distinct `RSS Feed link` FROM news_arabic");
     $rss_count_row=mysqli_num_rows($rss_count)-1;
-    $rss_count_row=round(($rss_count_row/$total_count_row)*100,0);
+    $rss_count_val=round(($rss_count_row/$total_count_row)*100,0);
 
 
     $wiki_count=$conn->query("SELECT distinct `Wikipedia page (https://ar.wikipedia.org/wiki/)` FROM news_arabic");
     $wiki_count_row=mysqli_num_rows($wiki_count)-1;
-    $wiki_count_row=round(($wiki_count_row/$total_count_row)*100,0);
+    $wiki_count_val=round(($wiki_count_row/$total_count_row)*100,0);
 
 
     $alexa_count=$conn->query("SELECT distinct `Alexa page (https://www.alexa.com/siteinfo/)` FROM news_arabic");
     $alexa_count_row=mysqli_num_rows($alexa_count)-1;
-    $alexa_count_row=round(($alexa_count_row/$total_count_row)*100,0);
+    $alexa_count_val=round(($alexa_count_row/$total_count_row)*100,0);
 
 
     $yt_count=$conn->query("SELECT distinct `YouTube (http://www.youtube.com/)` FROM news_arabic");
     $yt_count_row=mysqli_num_rows($yt_count)-1;
-    $yt_count_row=round(($yt_count_row/$total_count_row)*100,0);
+    $yt_count_val=round(($yt_count_row/$total_count_row)*100,0);
 
 
     $gp_count=$conn->query("SELECT distinct `GooglePlus (https://plus.google.com/)` FROM news_arabic");
     $gp_count_row=mysqli_num_rows($gp_count)-1;
-    $gp_count_row=round(($gp_count_row/$total_count_row)*100,0);
+    $gp_count_val=round(($gp_count_row/$total_count_row)*100,0);
 
 
     $insta_count=$conn->query("SELECT distinct `Instagram (https://www.instagram.com/)` FROM news_arabic");
     $insta_count_row=mysqli_num_rows($insta_count)-1;
-    $insta_count_row=round(($insta_count_row/$total_count_row)*100,0);
+    $insta_count_val=round(($insta_count_row/$total_count_row)*100,0);
 
                     
 ?>
 <h4 class="t_desc">Social Media Profile</h4>        
   <table style="width:50%;border:2px #eee solid;" class="desc table table-striped">
-    <thead>
-      <tr>
-        <th>Account</th>
-        <th>News Sources</th>
-      </tr>
-    </thead>
     <tbody>
     <tr>
          <td>Total News Sources</td>
@@ -110,7 +104,7 @@
          <i style="color: #00aced;" class="gsize fa fa-twitter-square"></i>
          </span>
          </td>
-         <td><?php echo $twitter_count_row ?>%</td>
+         <td><?php echo $twitter_count_row ?>&ensp;(<?php echo $twitter_count_val?>%)</td>
     </tr>
     <tr>
          <td>&ensp; Facebook Accounts
@@ -118,7 +112,7 @@
          <i style="color: rgb(59, 89, 152);" class="gsize fa fa-facebook-square"></i>
          </span>
          </td>
-         <td><?php echo $facebook_count_row ?>%</td>
+         <td><?php echo $facebook_count_row ?>&ensp;(<?php echo $facebook_count_val?>%)</td>
     </tr>
     <tr>
          <td>&ensp; Alexa Page Information
@@ -126,7 +120,7 @@
          <i style="color: #000000;" class="gsize fa fa-amazon"></i>
          </span>
          </td>
-         <td><?php echo $alexa_count_row ?>%</td>
+         <td><?php echo $alexa_count_row ?>&ensp;(<?php echo $alexa_count_val?>%)</td>
     </tr>
     <tr>
          <td>&ensp; Instagram Accounts
@@ -134,7 +128,7 @@
          <img style="width:25px; height:25px" src="instagram.png">
          </span>
          </td>
-         <td><?php echo $insta_count_row ?>%</td>
+         <td><?php echo $insta_count_row ?>&ensp;(<?php echo $insta_count_val?>%)</td>
     </tr>
     <tr>
          <td>&ensp; YouTube Accounts
@@ -142,7 +136,7 @@
          <i style="color: red" class="gsize fa fa-youtube-play"></i>
          </span>
          </td>
-         <td><?php echo $yt_count_row ?>%</td>
+         <td><?php echo $yt_count_row ?>&ensp;(<?php echo $yt_count_val?>%)</td>
     </tr>
     <tr>
          <td>&ensp; Google Plus Accounts
@@ -150,28 +144,28 @@
          <img style="width:25px; height:25px" src="googleplus.png">
          </span>
          </td>
-         <td><?php echo $gp_count_row ?>%</td>
+         <td><?php echo $gp_count_row ?>&ensp;(<?php echo $gp_count_val?>%)</td>
     </tr>
     <tr>
-         <td>&ensp; Wikipedia Page
+         <td>&ensp; Wikipedia Pages
          <span style="float:left;">
          <img align="left" style="width: 25px; height:25px;" src="wiki.png">
          </span>
          </td>
-         <td><?php echo $wiki_count_row ?>%</td>
+         <td><?php echo $wiki_count_row ?>&ensp;(<?php echo $wiki_count_val?>%)</td>
     </tr>
     <tr>
-         <td>&ensp; RSS Feed
+         <td>&ensp; RSS Feeds
          <span style="float:left;">
         <i style="color: orange;font-size: 25px;" class="fa fa-rss-square"></i></span>
          </td>
-         <td><?php echo $rss_count_row ?>%</td>
+         <td><?php echo $rss_count_row ?>&ensp;(<?php echo $rss_count_val?>%)</td>
     </tr>
 
     </tbody>
 </table>    
 <?php
-$sql_country_count="SELECT COUNT(country), country,country_code from news_arabic GROUP BY country ORDER BY COUNT(country) DESC";
+$sql_country_count="SELECT COUNT(country), country,country_code from news_arabic GROUP BY country, country_code ORDER BY `COUNT(country)` DESC";
 $result_country_count = $conn->query($sql_country_count);
 $i=0;
 ?> 
@@ -201,7 +195,7 @@ $i=0;
                     </td>
                     <td><?php echo $country_count[$i]?></td>
                     
-                    </tr>
+              </tr>
         <?php
                     $i++;
         }
