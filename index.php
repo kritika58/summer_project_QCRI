@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>QCRI-Mega News (English) Project</title>
+      <title>News Project</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
@@ -113,7 +113,7 @@
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="search">Search</button>
             <a class="btn btn-default my-2 my-sm-0" href="english/index.php">EN</a>
-            <a class="btn btn-default my-2 my-sm-0" href="stats_ara.php">Statistics</a>
+            <a class="btn btn-default my-2 my-sm-0" target="_blank" href="stats_ara.php">Statistics</a>
          </form>
       </nav>
 
