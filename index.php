@@ -139,8 +139,12 @@
             </ul>
             <div class="tab-content">
                <div id="home" class="tab-pane fade in active">
-
-
+               <form action="<?=$_SERVER['PHP_SELF'];?>" method="post">
+              <br>
+              <input style="width:60%;float:left;" class="form-control" type="text" name="Search_str" placeholder="Search..">
+              <input style="width:35%;float:right;" class="btn btn-primary" type="submit" value="Search" name="search">
+              <br>
+              </form>
                   <form id="form1" action="<?=$_SERVER['PHP_SELF'];?>" method="post">
                      <ul  class="desc hnav">
                         <br>
@@ -154,7 +158,7 @@
                                while($row = $result->fetch_assoc()) { 
                            ?>
                         <li>
-                           <span><input type="checkbox" name="check_list[]" value="<?php echo $row["user_id"]?>">
+                           <span><input type="checkbox" name="check_list[]" id="<?php echo $row["user_id"]?>" value="<?php echo $row["user_id"]?>">
                            <a href="display.php?id=<?php echo $row["user_id"]?>">
                            <?php echo $row["user_name"]?>
                            <img align="right" style="width: 40px; height:40px;" src="<?php echo $row["user_profile_image_url"]?>">
@@ -166,6 +170,37 @@
                            ?>
                      </ul>
                   </form>
+                  <?php
+                              $sql = "SELECT * FROM news_arabic";
+                              $result = $conn->query($sql);
+                                if(isset($_POST["search"])){
+                                    $search=$_POST["Search_str"];
+                                    $sql_search="SELECT * FROM news_arabic WHERE user_name LIKE '%".$search."%' ";
+                                    $result_search = $conn->query($sql_search);
+                                    $r1=$result_search->num_rows;                                   
+
+                                      if ($result_search->num_rows > 0) {
+                                          while($row_search = $result_search->fetch_assoc()) { 
+                                            echo $row_search["user_name"];
+                                            $uid=$row_search["user_id"];
+                                            $uid='"'.$uid.'"';
+                                            echo "<br>";
+                                            echo $uid;
+                                            echo "<br>";
+                                            ?>
+                                            <script language='javascript'>
+                                                alert("Selecting"+<?php echo $uid ?>);
+                                              document.getElementById(<?php echo $uid ?>).checked = true;
+                                              </script>
+                                            <?php
+                                              }       
+                                            }
+                                            else {
+                                              echo "Not found";
+                                            }
+                                          
+                                }
+                          ?>
                </div>
                <div id="menu1" class="tab-pane fade msize">
                   <br>

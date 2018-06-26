@@ -37,14 +37,6 @@
 	vertical-align:top;
 }
 </style>
-<?php 
-
-//$command = escapeshellcmd('/usr/custom/test.py');
-//$output = shell_exec($command);
-//echo $output;
-
-?>
-<!-- TWITTER USER PROFILE INFORMATION WILL BE HERE -->
 <?php
 function time_elapsed_string($datetime,$present, $full = false) 
 {
@@ -80,8 +72,9 @@ function time_elapsed_string($datetime,$present, $full = false)
    
 <?php
 	include 'dbconnection.php';
-	$sql="SELECT * FROM tweets_eng, eng_source_name WHERE 
-	eng_source_name.source_user_name = tweets_eng.screen_name";
+$sql="SELECT * FROM tweets_eng, eng_source_name WHERE 
+	eng_source_name.source_user_name = tweets_eng.screen_name ORDER BY tweets_eng.date DESC LIMIT 100";
+
 	$result = mysqli_query($conn,$sql);
 	if ($result->num_rows > 0) 
 	{

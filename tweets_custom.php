@@ -37,14 +37,6 @@
 	vertical-align:top;
 }
 </style>
-<?php 
-
-//$command = escapeshellcmd('/usr/custom/test.py');
-//$output = shell_exec($command);
-//echo $output;
-
-?>
-<!-- TWITTER USER PROFILE INFORMATION WILL BE HERE -->
 <?php
 function time_elapsed_string($datetime,$present, $full = false) 
 {
@@ -82,8 +74,7 @@ function time_elapsed_string($datetime,$present, $full = false)
 	include 'dbconnection.php';
 	//$sql="SELECT * FROM tweets_ara ORDER BY tweets_ara.date DESC LIMIT 100";
 	$sql="SELECT * FROM tweets_ara, ara_source_name WHERE 
-	ara_source_name.source_user_name = tweets_ara.screen_name";
-	//$sql ="SELECT TOP (30) * FROM Table ORDER BY date DESC";
+	ara_source_name.source_user_name = tweets_ara.screen_name ORDER BY tweets_ara.date DESC LIMIT 100";
 	$result = mysqli_query($conn,$sql);
 	if ($result->num_rows > 0) 
 	{
@@ -120,22 +111,7 @@ function time_elapsed_string($datetime,$present, $full = false)
 			// filter out the retweets 						
 			if(preg_match('/^RT/', $tweet_text) == 0)
 			{			
-				echo "<div class=\"div_tweet\">";
-				/*
-				$article = new DOMDocument;
-				// enable user error handling
-				libxml_use_internal_errors(true);
-				$article ->loadHTMLFile($tweet_url); 
-				$titles = $article->getElementsByTagName("title");
-				foreach($titles as $title)
-				{ 
-					//echo ; 
-					echo "<h4 class='margin-top-4px'>";
-					echo "<span style=\"float:right\"><p class=\"tweet\">$title->nodeValue</p></span>";
-					echo "</h4>";
-				} 
-				*/
-				
+				echo "<div class=\"div_tweet\">";				
 				
 				// show name and screen name
 				echo "<img class=\"profile_img\" src='{$tweet['user']['profile_image_url_https']}' class='img-thumbnail' />";
@@ -149,30 +125,18 @@ function time_elapsed_string($datetime,$present, $full = false)
 				echo "</h4>";
 								
 				// get tweet time
-				$tweet_time = $tweet['created_at'];
-				//echo $tweet_time;
-				//echo nl2br("\n ");
-							
+				$tweet_time = $tweet['created_at'];							
 				$t_time= time_elapsed_string($tweet_time,$now);
 				echo "<p class='tweet_time'>$t_time &nbsp; ($tweet_time)</p>";
 				echo nl2br("\n ");
 								
 								
-				$tweet_pic;
 				if (array_key_exists('media', $tweet['entities']))
 				{
-					// get tweet picture
-					//if(array_key_exists('media_url', $tweet['entities']['media']))
-					//{
-						$tweet_pic= $tweet['entities']['media'][0]["media_url"];
-						echo "<img class='tweet_pic' src='{$tweet_pic}' class='img-thumbnail'/>";
-					//}
+					$tweet_pic= $tweet['entities']['media'][0]["media_url"];
+					echo "<img class='tweet_pic' src='{$tweet_pic}' class='img-thumbnail'/>";
 					
 				}
-				/*else 
-				{
-					$tweet_pic = NULL;
-				}*/
 				echo "</div>";
 			}	
 			
@@ -181,8 +145,6 @@ function time_elapsed_string($datetime,$present, $full = false)
 	
 	<?php
 	
-			//echo strlen($row['tweet']).'<br>';
-			//echo $row['tweet'].'<br>';
 			echo '<br>';
 		}
 	}
