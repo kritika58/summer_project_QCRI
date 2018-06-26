@@ -171,33 +171,33 @@
                      </ul>
                   </form>
                   <?php
-                              $sql = "SELECT * FROM news_arabic";
-                              $result = $conn->query($sql);
-                                if(isset($_POST["search"])){
-                                    $search=$_POST["Search_str"];
-                                    $sql_search="SELECT * FROM news_arabic WHERE user_name LIKE '%".$search."%' ";
-                                    $result_search = $conn->query($sql_search);
-                                    $r1=$result_search->num_rows;                                   
+                  $sql = "SELECT * FROM news_arabic";
+                  $result = $conn->query($sql);
+                    if(isset($_POST["search"])){
+                        $search=$_POST["Search_str"];
+                        $sql_search="SELECT * FROM news_arabic WHERE user_name LIKE '%".$search."%' ";
+                        $result_search = $conn->query($sql_search);
+                        $r1=$result_search->num_rows;                                   
 
-                                      if ($result_search->num_rows > 0) {
-                                          while($row_search = $result_search->fetch_assoc()) { 
-                                            echo $row_search["user_name"];
-                                            $uid=$row_search["user_id"];
-                                            $uid='"'.$uid.'"';
-                                            echo "<br>";
-                                            echo $uid;
-                                            echo "<br>";
-                                            ?>
-                                            <script language='javascript'>
-                                                alert("Selecting"+<?php echo $uid ?>);
-                                              document.getElementById(<?php echo $uid ?>).checked = true;
-                                              </script>
-                                            <?php
-                                              }       
-                                            }
-                                            else {
-                                              echo "Not found";
-                                            }
+                          if ($result_search->num_rows > 0) {
+                              while($row_search = $result_search->fetch_assoc()) { 
+                                echo $row_search["user_name"];
+                                $uid=$row_search["user_id"];
+                                $uid='"'.$uid.'"';
+                                echo "<br>";
+                                echo $uid;
+                                echo "<br>";
+                                ?>
+                                <script language='javascript'>
+                                    alert("Selecting"+<?php echo $uid ?>);
+                                  document.getElementById(<?php echo $uid ?>).checked = true;
+                                  </script>
+                                <?php
+                                  }       
+                                }
+                                else {
+                                  echo "Not found";
+                                }
                                           
                                 }
                           ?>
@@ -359,6 +359,7 @@
                <div id="menu2" class="tab-pane fade msize">
                   <br>
                   <form id="form_del" action="<?=$_SERVER['PHP_SELF'];?>" method="POST" > 
+                  
                   <?php 
                      if(isset($_POST['select'])){
                        if(!empty($_POST['check_list'])){
@@ -384,7 +385,7 @@
                            $id_f=$row_f["user_id"];
                            $img_f=$row_f["user_profile_image_url"];
                            echo "<li>";
-                           echo "<span><input type=\"checkbox\" name=\"check_list_f[]\" value=$id_f checked>
+                           echo "<span><input type=\"checkbox\" name=\"check_list_f[]\" value=$id_f>
                            <a href=\"display.php?id=$id_f?>\">$uname_f
                           <img align=\"right\" style=\"width: 40px; height:40px;\" src=$img_f>
                           </span>
@@ -411,9 +412,7 @@
                     }
                   }
                   }
-                  ?>
-                  <?php 
-                     if(isset($_POST['add'])){
+                    else if(isset($_POST['add'])){
                        if(!empty($_POST['check_list1'])){
                            foreach($_POST['check_list1'] as $selected){
                             $selected = mysqli_real_escape_string($conn,$selected);
@@ -436,7 +435,7 @@
                              $id_f=$row_f["user_id"];
                              $img_f=$row_f["user_profile_image_url"];
                              echo "<li>";
-                             echo "<span><input type=\"checkbox\" name=\"check_list_f[]\" value=$id_f checked>
+                             echo "<span><input type=\"checkbox\" name=\"check_list_f[]\" value=$id_f>
                              <a href=\"display.php?id=$id_f?>\">$uname_f
                             <img align=\"right\" style=\"width: 40px; height:40px;\" src=$img_f>
                             </span>
@@ -465,67 +464,97 @@
                     }
                   }
                   }
-                  ?>                  
+                    else if(isset($_POST['delete'])) {
+                      if(!empty($_POST['check_list_f'])){                         
+                        foreach($_POST['check_list_f'] as $selected){
+                          $sql = "DELETE FROM my_sources_ar WHERE us_id='".$selected."' ";
+                      
+                          $result = mysqli_query($conn,$sql);
+                      
+                      }
+                        $sql_f = "SELECT * FROM my_sources_ar,news_arabic WHERE my_sources_ar.us_id=news_arabic.user_id";
+                          $result_f = mysqli_query($conn,$sql_f);
+                  
+                          if ($result_f->num_rows > 0) {
+                            // output data of each row
+                            echo "<ul  class='desc hnav'>";
+                                while($row_f = $result_f->fetch_assoc()) { 
+                  
+                  
+                          $uname_f=$row_f["user_name"];
+                          $id_f=$row_f["user_id"];
+                          $img_f=$row_f["user_profile_image_url"];
+                          echo "<li>";
+                          echo "<span><input type=\"checkbox\" name=\"check_list_f[]\" value=$id_f>
+                          <a href=\"display.php?id=$id_f?>\">$uname_f
+                         <img align=\"right\" style=\"width: 40px; height:40px;\" src=$img_f>
+                         </span>
+                         </a>
+                         </li>";  
+               }
+               }
+               }
+               $truncate= mysqli_query($conn,"TRUNCATE TABLE ara_source_name");
+               $q1="SELECT * FROM my_sources_ar";
+               $r1= mysqli_query($conn,$q1);
+               if ($r1->num_rows >0) {
+                 while ($row1= $r1->fetch_assoc()) {
+                   $s_id=$row1["us_id"];
+                   $q2="SELECT user_screen_name FROM news_arabic WHERE user_id='".$s_id."' ";
+                   $r2= mysqli_query($conn,$q2);
+                   if ($r2->num_rows >0) {
+                     while ($row2=$r2->fetch_assoc()) {
+                       $s_user_name= $row2["user_screen_name"];
+                       $sql = "INSERT INTO ara_source_name (source_user_name,source_user_id) VALUES ('".$s_user_name."', '".$s_id."')";
+                                 $result = mysqli_query($conn,$sql);
+             
+                     }
+                   }
+             
+                 }
+               }
+                  }
+                  else {
+                    $truncate_name= mysqli_query($conn,"TRUNCATE TABLE ara_source_name");
+                    $truncate_id= mysqli_query($conn,"TRUNCATE TABLE my_sources_ar");
+                    $sql_f = "SELECT * FROM news_arabic LIMIT 10";
+                    $result_f = mysqli_query($conn,$sql_f);
+                     
+                      if ($result_f->num_rows > 0) {
+
+                        // output data of each row
+                        echo "<ul  class='desc hnav'>";
+                            while($row_f = $result_f->fetch_assoc()) {                                  
+                     
+                             $uname_f=$row_f["user_name"];
+                             $id_f=(int)$row_f["user_id"];
+                             $img_f=$row_f["user_profile_image_url"];
+                             $s_user_name=$row_f["user_screen_name"];
+
+                            $sql = "INSERT INTO ara_source_name (source_user_name,source_user_id) VALUES ('".$s_user_name."', '".$id_f."')";
+                            $result = mysqli_query($conn,$sql);
+                            $sql10 = "INSERT INTO my_sources_ar (us_id) VALUES ('".$id_f."')";
+                            $result10 = mysqli_query($conn,$sql10);
+
+
+
+                             echo "<li>";
+                             echo "<span><input type=\"checkbox\" name=\"check_list_f[]\" value=$id_f>
+                             <a href=\"display.php?id=$id_f?>\">$uname_f
+                            <img align=\"right\" style=\"width: 40px; height:40px;\" src=$img_f>
+                            </span>
+                            </a>
+                            </li>";  
+                  }
+                  }
+                    
+                  }
+                  ?>
                   <br>
                   <center>
                      <input type="submit" name="delete" class="btn btn-danger" value="Delete">
                   </center>
                   </form>
-                  <?php 
-                     if(isset($_POST['delete'])){
-                      $r= mysqli_query($conn,"TRUNCATE TABLE my_sources_ar");
-                       if(!empty($_POST['check_list_f'])){                         
-                           foreach($_POST['check_list_f'] as $selected){
-                            $selected = mysqli_real_escape_string($conn,$selected);
-                             $sql = "INSERT INTO my_sources_ar (us_id)
-                             VALUES ('".$selected."')";
-                         
-                             $result = mysqli_query($conn,$sql);
-                         
-                         }
-                           $sql_f = "SELECT * FROM my_sources_ar,news_arabic WHERE my_sources_ar.us_id=news_arabic.user_id";
-                             $result_f = mysqli_query($conn,$sql_f);
-                     
-                             if ($result_f->num_rows > 0) {
-                               // output data of each row
-                               echo "<ul  class='desc hnav'>";
-                                   while($row_f = $result_f->fetch_assoc()) { 
-                     
-                     
-                             $uname_f=$row_f["user_name"];
-                             $id_f=$row_f["user_id"];
-                             $img_f=$row_f["user_profile_image_url"];
-                             echo "<li>";
-                             echo "<span><input type=\"checkbox\" name=\"check_list_f[]\" value=$id_f checked>
-                             <a href=\"display.php?id=$id_f?>\">$uname_f
-                            <img align=\"right\" style=\"width: 40px; height:40px;\" src=$img_f>
-                            </span>
-                            </a>
-                            </li>";  
-                  }
-                  }
-                  }
-                  $truncate= mysqli_query($conn,"TRUNCATE TABLE ara_source_name");
-                  $q1="SELECT * FROM my_sources_ar";
-                  $r1= mysqli_query($conn,$q1);
-                  if ($r1->num_rows >0) {
-                    while ($row1= $r1->fetch_assoc()) {
-                      $s_id=$row1["us_id"];
-                      $q2="SELECT user_screen_name FROM news_arabic WHERE user_id='".$s_id."' ";
-                      $r2= mysqli_query($conn,$q2);
-                      if ($r2->num_rows >0) {
-                        while ($row2=$r2->fetch_assoc()) {
-                          $s_user_name= $row2["user_screen_name"];
-                          $sql = "INSERT INTO ara_source_name (source_user_name,source_user_id) VALUES ('".$s_user_name."', '".$s_id."')";
-                                    $result = mysqli_query($conn,$sql);
-                
-                        }
-                      }
-                
-                    }
-                  }
-                  }
-                  ?>
                </div>
             </div>
          </div>
@@ -547,22 +576,6 @@
                   class="btn btn-primary btn-block" role="button">Manage Your Sources</a> -->
 
 
-                <?php
-                if(isset($_POST['delete'])){
-                include 'tweets_custom.php';
-                }
-                else if(isset($_POST['select'])){
-                  echo "select";
-                  include 'tweets_custom.php';
-                  }
-                else if(isset($_POST['add'])){
-                    include 'tweets_custom.php';
-                    }
-                    else {
-                      include 'tweets.php';
-                    }
-
-                ?>
             </div>
          </div>
       </div>

@@ -139,7 +139,8 @@
               <input style="width:60%;float:left;" class="form-control" type="text" name="Search_str" placeholder="Search..">
               <input style="width:35%;float:right;" class="btn btn-primary" type="submit" value="Search" name="search">
               <br>
-
+              <div class="desc" id="status1">
+              </div>
               </form>
 
 
@@ -175,20 +176,20 @@
                         $search=$_POST["Search_str"];
                         $sql_search="SELECT * FROM news_english WHERE user_name LIKE '%".$search."%' ";
                         $result_search = $conn->query($sql_search);
-                        $r1=$result_search->num_rows;                                   
+                        $r1=$result_search->num_rows;  
+                        $total_count=$result->num_rows;                               
 
                           if ($result_search->num_rows > 0) {
                               while($row_search = $result_search->fetch_assoc()) { 
                                 echo $row_search["user_name"];
                                 $uid=$row_search["user_id"];
                                 $uid='"'.$uid.'"';
-                                echo "<br>";
-                                echo $uid;
-                                echo "<br>";
+                                
                                 ?>
                                 <script language='javascript'>
-                                    alert("Selecting"+<?php echo $uid ?>);
                                   document.getElementById(<?php echo $uid ?>).checked = true;
+                                  document.getElementById("status1").innerHTML = "<br>Total number of sources are: <?php echo $total_count ?><br>Number of matched searches are: <?php echo $r1 ?><br>";
+                                  
                                   </script>
                                 <?php
                                   }       
@@ -327,7 +328,8 @@
                         $selected_category = $_POST['category'];
                         $sql1 = "SELECT * FROM news_english WHERE country_code='".$selected_country."' AND Category='".$selected_category."' ";
                         $result1 = $conn->query($sql1);
-                        //echo '<p class=\'desc\'>You have selected '.mysqli_num_rows($result1).' sources from '.$country_name.' in '.$selected_category.' category.</p>';
+                        $country=$result1->fetch_array(MYSQLI_ASSOC)["country"];
+                        echo '<p class=\'desc\'>Displaying '.mysqli_num_rows($result1).' sources from '.$country.' in '.$selected_category.' category.</p>';
                         if ($result1->num_rows > 0) {
                         echo "<ul  class='desc hnav'>";		
                         $i=0;
@@ -356,7 +358,9 @@
                </div>
                <div id="menu2" class="tab-pane fade msize">
                   <br>
-                  <form id="form_del" action="<?=$_SERVER['PHP_SELF'];?>" method="POST" > 
+                  <form id="form_del" action="<?=$_SERVER['PHP_SELF'];?>" method="POST" >
+                  <div id="status2" class="desc">
+                  </div>
                   
                   <?php 
                      if(isset($_POST['select'])){
@@ -391,8 +395,10 @@
                           </li>";  
                   }
                   }
+                  $total_count=mysqli_query($conn,"SELECT * FROM news_english")->num_rows;
                   $q1="SELECT * FROM my_sources_en";
                   $r1= mysqli_query($conn,$q1);
+                  $selected_count=$r1->num_rows;
                   if ($r1->num_rows >0) {
                     while ($row1= $r1->fetch_assoc()) {
                       $s_id=$row1["us_id"];
@@ -406,9 +412,14 @@
                 
                         }
                       }
-                
                     }
                   }
+                  ?>
+                      <script language='javascript'>
+                      document.getElementById("status2").innerHTML = "Total number of sources are: <?php echo $total_count ?><br>Number of selected are: <?php echo $selected_count ?><br>";
+                      
+                      </script>
+                <?php
                   }                 
                   else if(isset($_POST['add'])){
                        if(!empty($_POST['check_list1'])){
@@ -442,9 +453,11 @@
                   }
                   }
                   }
+                  $total_count=mysqli_query($conn,"SELECT * FROM news_english")->num_rows;
                   $truncate= mysqli_query($conn,"TRUNCATE TABLE eng_source_name");
                   $q1="SELECT * FROM my_sources_en";
                   $r1= mysqli_query($conn,$q1);
+                  $selected_count=$r1->num_rows;
                   if ($r1->num_rows >0) {
                     while ($row1= $r1->fetch_assoc()) {
                       $s_id=$row1["us_id"];
@@ -461,6 +474,13 @@
                 
                     }
                   }
+                  ?>
+                  <script language='javascript'>
+                      document.getElementById("status2").innerHTML = "Total number of sources are: <?php echo $total_count ?><br>Number of selected are: <?php echo $selected_count ?><br>";
+                      
+                      </script>
+
+                  <?php
                   }
                   else if(isset($_POST['delete'])){
                        if(!empty($_POST['check_list_f'])){                         
@@ -493,8 +513,10 @@
                   }
                   }
                   $truncate= mysqli_query($conn,"TRUNCATE TABLE eng_source_name");
+                  $total_count=mysqli_query($conn,"SELECT * FROM news_english")->num_rows;
                   $q1="SELECT * FROM my_sources_en";
                   $r1= mysqli_query($conn,$q1);
+                  $selected_count=$r1->num_rows;
                   if ($r1->num_rows >0) {
                     while ($row1= $r1->fetch_assoc()) {
                       $s_id=$row1["us_id"];
@@ -511,12 +533,21 @@
                 
                     }
                   }
+                  ?>
+                  <script language='javascript'>
+                      document.getElementById("status2").innerHTML = "Total number of sources are: <?php echo $total_count ?><br>Number of selected are: <?php echo $selected_count ?><br>";
+                      
+                      </script>
+
+                  <?php
                   }
                   else {
                     $truncate_name= mysqli_query($conn,"TRUNCATE TABLE eng_source_name");
                     $truncate_id= mysqli_query($conn,"TRUNCATE TABLE my_sources_en");
                     $sql_f = "SELECT * FROM news_english LIMIT 10";
                     $result_f = mysqli_query($conn,$sql_f);
+                    $total_count=mysqli_query($conn,"SELECT * FROM news_english")->num_rows;
+                    $selected_count=$result_f->num_rows;
                      
                       if ($result_f->num_rows > 0) {
 
@@ -545,8 +576,16 @@
                             </li>";  
                   }
                   }
+                  ?>
+                  <script language='javascript'>
+                      document.getElementById("status2").innerHTML = "Total number of sources are: <?php echo $total_count ?><br>Number of selected are: <?php echo $selected_count ?><br>";
+                      
+                      </script>
+
+                  <?php
                     
-                  }  ?>
+                  }  
+                  ?>
                   <br>
                   <center>
                      <input type="submit" name="delete" class="btn btn-danger" value="Delete">
