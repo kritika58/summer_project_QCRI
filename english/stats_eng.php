@@ -40,52 +40,52 @@
 </head>
 <center>
 <div class="container">  
-<h2 class="heading">Arabic Site Anatomy</h2>
+<h2 class="heading">English Site Anatomy</h2>
 <hr>
 <?php
    include 'dbconnection.php';
    ?>
 <?php
 
-    $total_count=$conn->query("SELECT * FROM news_arabic");
+    $total_count=$conn->query("SELECT * FROM news_english");
     $total_count_row=mysqli_num_rows($total_count);
 
 
-    $twitter_count=$conn->query("SELECT distinct user_name FROM news_arabic");
+    $twitter_count=$conn->query("SELECT distinct user_screen_name FROM news_english");
     $twitter_count_row=mysqli_num_rows($twitter_count);
     $twitter_count_row=round(($twitter_count_row/$total_count_row)*100,0);
 
-    $facebook_count=$conn->query("SELECT distinct `Facebook Page (https://www.facebook.com/)` FROM news_arabic");
+    $facebook_count=$conn->query("SELECT distinct `Facebook Page (https://www.facebook.com/)` FROM news_english");
     $facebook_count_row=mysqli_num_rows($facebook_count)-1;
     $facebook_count_row=round(($facebook_count_row/$total_count_row)*100,0);
     
 
-    $rss_count=$conn->query("SELECT distinct `RSS Feed link` FROM news_arabic");
+    $rss_count=$conn->query("SELECT distinct `RSS Feed link` FROM news_english");
     $rss_count_row=mysqli_num_rows($rss_count)-1;
     $rss_count_row=round(($rss_count_row/$total_count_row)*100,0);
 
 
-    $wiki_count=$conn->query("SELECT distinct `Wikipedia page (https://ar.wikipedia.org/wiki/)` FROM news_arabic");
+    $wiki_count=$conn->query("SELECT distinct `Wikipedia page (https://en.wikipedia.org/wiki/)` FROM news_english");
     $wiki_count_row=mysqli_num_rows($wiki_count)-1;
     $wiki_count_row=round(($wiki_count_row/$total_count_row)*100,0);
 
 
-    $alexa_count=$conn->query("SELECT distinct `Alexa page (https://www.alexa.com/siteinfo/)` FROM news_arabic");
+    $alexa_count=$conn->query("SELECT distinct `Alexa page (https://www.alexa.com/siteinfo/)` FROM news_english");
     $alexa_count_row=mysqli_num_rows($alexa_count)-1;
     $alexa_count_row=round(($alexa_count_row/$total_count_row)*100,0);
 
 
-    $yt_count=$conn->query("SELECT distinct `YouTube (http://www.youtube.com/)` FROM news_arabic");
+    $yt_count=$conn->query("SELECT distinct `YouTube (http://www.youtube.com/)` FROM news_english");
     $yt_count_row=mysqli_num_rows($yt_count)-1;
     $yt_count_row=round(($yt_count_row/$total_count_row)*100,0);
 
 
-    $gp_count=$conn->query("SELECT distinct `GooglePlus (https://plus.google.com/)` FROM news_arabic");
+    $gp_count=$conn->query("SELECT distinct `GooglePlus (https://plus.google.com/+)` FROM news_english");
     $gp_count_row=mysqli_num_rows($gp_count)-1;
     $gp_count_row=round(($gp_count_row/$total_count_row)*100,0);
 
 
-    $insta_count=$conn->query("SELECT distinct `Instagram (https://www.instagram.com/)` FROM news_arabic");
+    $insta_count=$conn->query("SELECT distinct `Instagram (https://www.instagram.com/)` FROM news_english");
     $insta_count_row=mysqli_num_rows($insta_count)-1;
     $insta_count_row=round(($insta_count_row/$total_count_row)*100,0);
 
@@ -171,7 +171,7 @@
     </tbody>
 </table>    
 <?php
-$sql_country_count="SELECT COUNT(country), country,country_code from news_arabic GROUP BY country ORDER BY COUNT(country) DESC";
+$sql_country_count="SELECT COUNT(country), country,country_code from news_english GROUP BY country ORDER BY COUNT(country) DESC";
 $result_country_count = $conn->query($sql_country_count);
 $i=0;
 ?> 
@@ -211,7 +211,7 @@ $i=0;
 
     <!-- count of sources per category-->
     <?php
-    $sql_category_count="SELECT COUNT(category), Category from news_arabic GROUP BY Category ORDER BY COUNT(category) DESC";
+    $sql_category_count="SELECT COUNT(category), Category from news_english GROUP BY Category ORDER BY COUNT(category) DESC";
     $result_category_count = $conn->query($sql_category_count);
     $i=0;
     ?>
@@ -236,9 +236,9 @@ $i=0;
                 $fcat='General';
                 $gicon='fa fa-globe';
             }
-            if (strcmp($cat,'Sports')==0)
+            if (strcmp($cat,'Sport')==0)
             {
-                $fcat='Sports';
+                $fcat='Sport';
                 $gicon='fa fa-soccer-ball-o';
             }
             if (strcmp($cat,'Entertainment')==0)

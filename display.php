@@ -156,12 +156,12 @@
                                 if (strcmp($cat,'Science')==0)
                                 {
                                     $fcat='Science';
-                                    $gicon='fa fa-connectdevelop';
+                                    $gicon='fa fa-cogs';
                                 }
                                 if (strcmp($cat,'Health')==0)
                                 {
                                     $fcat='Health';
-                                    $gicon='healing';
+                                    $gicon='fa fa-medkit';
                                 }
                                 if (strcmp($cat,'Economy')==0)
                                 {

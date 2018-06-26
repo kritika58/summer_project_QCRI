@@ -156,7 +156,7 @@
                                 {
                                     $gicon='fa fa-globe';
                                 }
-                                if (strcmp($cat,'Sports')==0)
+                                if (strcmp($cat,'Sport')==0)
                                 {
                                     $gicon='fa fa-soccer-ball-o';
                                 }
