@@ -24,9 +24,10 @@
 }
 .div_tweet {
 	border: 3px #eee solid;
-	min-height: 100px;
-	position:absolute;
+	display: flex;
+	min-height: 100px;	
 	overflow: auto;
+	border-radius: 10px;
 }
 .tweet_pic {
 	margin: 10px 10px;
@@ -38,27 +39,15 @@
 	vertical-align:top;
 }
 .div_text {
-	float:left;
-	position: relative;
-	display: inline-block;
+	flex: 0 0 65%;
 	width: 60vw;
 }
 .div_tweet_pic {
-	float:right;
-	position: relative;
-	display: inline-block;
-	width: 35vw;
+	flex:1;
+	width: 30vw;
 
 }
 </style>
-<?php 
-
-//$command = escapeshellcmd('/usr/custom/test.py');
-//$output = shell_exec($command);
-//echo $output;
-
-?>
-<!-- TWITTER USER PROFILE INFORMATION WILL BE HERE -->
 <?php
 function time_elapsed_string($datetime,$present, $full = false) 
 {
@@ -94,7 +83,7 @@ function time_elapsed_string($datetime,$present, $full = false)
    
 <?php
 	include 'dbconnection.php';
-	$sql="SELECT * FROM tweets_eng, eng_source_name WHERE eng_source_name.source_user_name = tweets_eng.screen_name ORDER BY tweets_eng.date DESC LIMIT 10";
+	$sql="SELECT * FROM tweets_ara,ara_source_name WHERE ara_source_name.source_user_name=tweets_ara.screen_name ORDER BY tweets_ara.date DESC LIMIT 100";
 	$result = mysqli_query($conn,$sql);
 	if ($result->num_rows > 0) 
 	{
@@ -106,7 +95,8 @@ function time_elapsed_string($datetime,$present, $full = false)
 			// decode json format tweets
 			$tweet=json_decode($json, TRUE);
 			
-				
+	
+		
 			$now = gmdate('D M d H:i:s +0000 Y');
 			//echo $now;
 					
@@ -117,17 +107,8 @@ function time_elapsed_string($datetime,$present, $full = false)
 			// make links clickable
 			$tweet_text=preg_replace('@(https?://([-\w\.]+)+(/([\w/_\.]*(\?\S+)?(#\S+)?)?)?)@', '<a href="$1" target="_blank">... &nbsp;</a>', $tweet_text);
 			
-			if (array_key_exists('urls', $tweet['entities']))
-			{
-				if(array_key_exists(0, $tweet['entities']['urls']))
-				{
-					$tweet_url = $tweet['entities']['urls'][0]['expanded_url'];
-				}
-			}
-			else
-			{
-				$tweet_url = NULL;
-			}
+			//$tweet_url = $tweet['entities']['urls'][0]['expanded_url'];
+			
 			
 			
 			//$tweet_text=preg_replace('@(https?://([-\w\.]+)+(/([\w/_\.]*(\?\S+)?(#\S+)?)?)?)@', ' ', $tweet_text );
@@ -136,103 +117,44 @@ function time_elapsed_string($datetime,$present, $full = false)
 			if(preg_match('/^RT/', $tweet_text) == 0)
 			{			
 				echo "<div class=\"div_tweet\">";
-				echo "<div class='div_text'>";
-				
+				echo "<div class=\"div_text\">";				
 				
 				// show name and screen name
 				echo "<img class=\"profile_img\" src='{$tweet['user']['profile_image_url_https']}' class='img-thumbnail' />";
 				echo "<html>&ensp;</html>";
 				echo "<p class=\"username\">{$tweet['user']['name']}</p> ";
 				//echo "<span class='color-gray'>@{$screen_name}</span>";
-									
-								
-				// output
-				if($tweet_url != NULL)
-				{
-					$article = new DOMDocument;
-
-					// enable user error handling
-					libxml_use_internal_errors(true);
-
-					$article ->loadHTMLFile($tweet_url);
-					//echo $article; 
-					//var_dump($article);
-					$titles = $article->getElementsByTagName("title");
-					$title = $titles[0];
-					//foreach($titles as $title)
-					//{ 
-					
-						echo "<h4 class='margin-top-4px'>";
-						echo "<p class=\"tweet\">$title->nodeValue &nbsp;</p>";
-						echo "<a href='{$tweet_url}'>...</a> ";
-						echo "</h4>";
-						//echo $title->nodeValue, PHP_EOL; 
-						//echo nl2br("\n "); 
-					//}
-				}
-				else
-				{
-					echo "<h4 class='margin-top-4px'>";
-					echo "<p class=\"tweet\">From tweet: $tweet_text</p>";
-					echo "</h4>";
-				}
 				
+				// output
+				echo "<h4 class='margin-top-4px'>";
+				echo "<p class=\"tweet\">$tweet_text</p>";
+				echo "</h4>";
+								
 				// get tweet time
-				$tweet_time = $tweet['created_at'];
-				//echo $tweet_time;
-				//echo nl2br("\n ");
-							
+				$tweet_time = $tweet['created_at'];							
 				$t_time= time_elapsed_string($tweet_time,$now);
 				echo "<p class='tweet_time'>$t_time &nbsp; ($tweet_time)</p>";
 				echo nl2br("\n ");
-				echo "</div>"; //ended div_text
-				echo "<div class='div_tweet_pic'>";
-				//picture from tweet url
-				
-					if($tweet_url != NULL)
-					{
-						$page_content = file_get_contents($tweet_url);
-
-						$dom_obj = new DOMDocument();
-
-						libxml_use_internal_errors(true);
-
-
-						$dom_obj->loadHTML($page_content);
-						$meta_val = null;
-
-						foreach($dom_obj->getElementsByTagName('meta') as $meta) 
-						{
-							if($meta->getAttribute('property')=='og:image')
-							{ 
-								$meta_val = $meta->getAttribute('content');
-							}
-						}
-						echo "<img class='tweet_pic' src='{$meta_val}' class='img-thumbnail'/>";
-					} 
-					else if(array_key_exists('media', $tweet['entities']))
-					{
-						// get tweet picture
-						//if(array_key_exists('media_url', $tweet['entities']['media']))
-						//{
-							$tweet_pic= $tweet['entities']['media'][0]["media_url"];
-							echo "<img class='tweet_pic' src='{$tweet_pic}' class='img-thumbnail'/>";
-						//}
-					}
-					echo "</div>"; //ended div_tweet_pic
-
-
+								
+                echo "</div>"; //ending div_text
+                echo "<div class='div_tweet_pic'>";				
+				if (array_key_exists('media', $tweet['entities']))
+				{
+					$tweet_pic= $tweet['entities']['media'][0]["media_url"];
+					
+					//picture from tweet url
+					echo "<img class='tweet_pic' src='{$tweet_pic}' class='img-thumbnail'/>";
+					
+					
+                }
+                echo "</div>";
 				echo "</div>";
 			}	
 			
-			
-	?>
-	
-	<?php
-	
-			//echo strlen($row['tweet']).'<br>';
-			//echo $row['tweet'].'<br>';
+				
 			echo '<br>';
 		}
 	}
+	
+	
 ?>

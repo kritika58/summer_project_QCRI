@@ -100,20 +100,19 @@
              }
              $(this).closest('.panel').toggleClass('panel-fullscreen');
          });
-         });
-         
+         });         
       </script>
    </head>
    <body>
       <nav class="navbar navbar-dark bg-dark justify-content-between">
-         <a class="heading navbar-brand">Live News Project</a>
+         <a style="float:left;left:0px;margin-right:auto;" class="heading navbar-brand">Live News</a>
          <form class="form-inline">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-default my-2 my-sm-0" type="submit" value="search">Search &nbsp;
             <span style="float:right;">
             <i style="font-size: 20px;" class="fa fa-search"></i>
             </span></button>
-            <a class="btn btn-default my-2 my-sm-0" href="http://localhost/Summer%20Project/">AR &nbsp;
+            <a class="btn btn-default my-2 my-sm-0" target="_blank" href="../index.php">AR &nbsp;
             <span style="float:right;">
             <img align="left" style="width: 22px; height:22px;" src="arabic-icon.jpg">
             </span></a>
@@ -149,13 +148,6 @@
                         </center>
                         <br>
                         <?php
-                           $src_count=$result->num_rows;
-                           ?>
-                        <script language='javascript'>
-                           document.getElementById("status1").innerHTML = "<br>Sources Displayed: <?php echo $src_count ?>";
-                           
-                        </script>
-                        <?php
                            if ($result->num_rows > 0) {
                            // output data of each row
                                while($row = $result->fetch_assoc()) { 
@@ -187,13 +179,11 @@
                                  while($row_search = $result_search->fetch_assoc()) { 
                                    echo $row_search["user_name"];
                                    $uid=$row_search["user_id"];
-                                   $uid='"'.$uid.'"';
-                                   
+                                   $uid='"'.$uid.'"';                                   
                                    ?>
                   <script language='javascript'>
                      document.getElementById(<?php echo $uid ?>).checked = true;
-                     document.getElementById("status1").innerHTML = "Total number of sources are: <?php echo $total_count ?><br>Number of matched searches are: <?php echo $r1 ?><br>";
-                     
+                     document.getElementById("status1").innerHTML = "Total number of sources are: <?php echo $total_count ?><br>Number of matched searches are: <?php echo $r1 ?><br>";                     
                   </script>
                   <?php
                      }       
@@ -332,9 +322,10 @@
                         $selected_category = $_POST['category'];
                         $sql1 = "SELECT * FROM news_english WHERE country_code='".$selected_country."' AND Category='".$selected_category."' ";
                         $result1 = $conn->query($sql1);
-                        $country=$result1->fetch_array(MYSQLI_ASSOC)["country"];
-                        echo '<p class=\'desc\'>Displaying '.mysqli_num_rows($result1).' sources from '.$country.' in '.$selected_category.' category.</p>';
+                        
                         if ($result1->num_rows > 0) {
+
+                        echo '<p class=\'desc\'>Sources: '.mysqli_num_rows($result1).'</p>';                         
                         echo "<ul  class='desc hnav'>";		
                         $i=0;
                         while ($row1 = $result1->fetch_array(MYSQLI_ASSOC))
@@ -430,20 +421,15 @@
                                  foreach($_POST['check_list1'] as $selected){
                                   $selected = mysqli_real_escape_string($conn,$selected);
                                    $sql = "INSERT INTO my_sources_en (us_id)
-                                   VALUES ('".$selected."')";
-                               
-                                   $result = mysqli_query($conn,$sql);
-                               
+                                   VALUES ('".$selected."')";                               
+                                   $result = mysqli_query($conn,$sql);                               
                                }
                                  $sql_f = "SELECT * FROM my_sources_en,news_english WHERE my_sources_en.us_id=news_english.user_id";
-                                   $result_f = mysqli_query($conn,$sql_f);
-                           
+                                   $result_f = mysqli_query($conn,$sql_f);                           
                                    if ($result_f->num_rows > 0) {
                                      // output data of each row
                                      echo "<ul  class='desc hnav'>";
-                                         while($row_f = $result_f->fetch_assoc()) { 
-                           
-                           
+                                         while($row_f = $result_f->fetch_assoc()) {                        
                                    $uname_f=$row_f["user_name"];
                                    $id_f=$row_f["user_id"];
                                    $img_f=$row_f["user_profile_image_url"];
@@ -486,20 +472,15 @@
                         else if(isset($_POST['delete'])){
                              if(!empty($_POST['check_list_f'])){                         
                                  foreach($_POST['check_list_f'] as $selected){
-                                   $sql = "DELETE FROM my_sources_en WHERE us_id='".$selected."'";
-                               
-                                   $result = mysqli_query($conn,$sql);
-                               
+                                   $sql = "DELETE FROM my_sources_en WHERE us_id='".$selected."'";                               
+                                   $result = mysqli_query($conn,$sql);                               
                                }
                                  $sql_f = "SELECT * FROM my_sources_en,news_english WHERE my_sources_en.us_id=news_english.user_id";
-                                   $result_f = mysqli_query($conn,$sql_f);
-                           
+                                   $result_f = mysqli_query($conn,$sql_f);                           
                                    if ($result_f->num_rows > 0) {
                                      // output data of each row
                                      echo "<ul  class='desc hnav'>";
-                                         while($row_f = $result_f->fetch_assoc()) { 
-                           
-                           
+                                         while($row_f = $result_f->fetch_assoc()) {                        
                                    $uname_f=$row_f["user_name"];
                                    $id_f=$row_f["user_id"];
                                    $img_f=$row_f["user_profile_image_url"];
@@ -545,27 +526,20 @@
                           $sql_f = "SELECT * FROM news_english LIMIT 10";
                           $result_f = mysqli_query($conn,$sql_f);
                           $total_count=mysqli_query($conn,"SELECT * FROM news_english")->num_rows;
-                          $selected_count=$result_f->num_rows;
-                           
-                            if ($result_f->num_rows > 0) {
-                        
+                          $selected_count=$result_f->num_rows;                           
+                            if ($result_f->num_rows > 0) {                        
                               // output data of each row
                               echo "<ul  class='desc hnav'>";
-                                  while($row_f = $result_f->fetch_assoc()) {                                  
-                           
-                                   $uname_f=$row_f["user_name"];
+                                  while($row_f = $result_f->fetch_assoc()) {                                
+                                  $uname_f=$row_f["user_name"];
                                    $id_f=(int)$row_f["user_id"];
                                    $img_f=$row_f["user_profile_image_url"];
-                                   $s_user_name=$row_f["user_screen_name"];
-                        
+                                   $s_user_name=$row_f["user_screen_name"];                        
                                   $sql = "INSERT INTO eng_source_name (source_user_name,source_user_id) VALUES ('".$s_user_name."', '".$id_f."')";
                                   $result = mysqli_query($conn,$sql);
                                   $sql10 = "INSERT INTO my_sources_en (us_id) VALUES ('".$id_f."')";
-                                  $result10 = mysqli_query($conn,$sql10);
-                        
-                        
-                        
-                                   echo "<li>";
+                                  $result10 = mysqli_query($conn,$sql10);                   
+                                  echo "<li>";
                                    echo "<span><input type=\"checkbox\" name=\"check_list_f[]\" value=$id_f>
                                    <a href=\"display.php?id=$id_f?>\">$uname_f
                      <img align=\"right\" style=\"width: 40px; height:40px;\" src=$img_f>
@@ -603,7 +577,10 @@
                   </li>
                </ul>
             </div>
-            <div class="panel-body">              
+            <div class="panel-body">   
+            <!-- call tweets file here --> 
+	    <?php 
+		include 'tweets_custom.php';  ?>          
             </div>
          </div>
       </div>
